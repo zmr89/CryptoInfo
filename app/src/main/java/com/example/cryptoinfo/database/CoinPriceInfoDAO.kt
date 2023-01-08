@@ -10,11 +10,11 @@ import com.example.cryptoinfo.pojo.CoinPriceInfo
 @Dao
 interface CoinPriceInfoDAO {
 
-    @Query("SELECT * FROM full_price_list ORDER BY lastupdate")
-    fun getListCoinPriceInfo(): LiveData<List<CoinPriceInfo>>
+    @Query("SELECT * FROM full_price_list ORDER BY lastupdate DESC")
+    fun getListAllCoinPriceInfo(): LiveData<List<CoinPriceInfo>>
 
-    @Query("SELECT * FROM full_price_list WHERE fromsymbol == :fsyms LIMIT 1")
-    fun getCoinPriceInfo(fsyms: String?): LiveData<CoinPriceInfo>
+    @Query("SELECT * FROM full_price_list WHERE fromsymbol == :fsym LIMIT 1")
+    fun getCoinPriceInfo(fsym: String?): LiveData<CoinPriceInfo>
 
     @Insert(onConflict = REPLACE)
     fun insertListCoinPriceInfo(list: List<CoinPriceInfo>)
