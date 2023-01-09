@@ -1,6 +1,5 @@
 package com.example.cryptoinfo.pojo
 
-import android.media.Rating
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

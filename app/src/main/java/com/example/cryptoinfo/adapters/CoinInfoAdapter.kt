@@ -4,13 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoinfo.R
 import com.example.cryptoinfo.pojo.CoinPriceInfo
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_coin_info.view.*
 
 class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
 
@@ -46,12 +44,11 @@ class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinI
         return listCoinPriceInfo.size
     }
 
-    //try delete "inner". Try use sintetic
     inner class CoinInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivLogo = itemView.findViewById<ImageView>(R.id.ivLogo)
-        val tvSymbols = itemView.findViewById<TextView>(R.id.tvSymbols)
-        val tvPrice = itemView.findViewById<TextView>(R.id.tvPrice)
-        val tvLastUpdate = itemView.findViewById<TextView>(R.id.tvLastUpdate)
+        val ivLogo = itemView.ivLogo
+        val tvSymbols = itemView.tvSymbols
+        val tvPrice = itemView.tvPrice
+        val tvLastUpdate = itemView.tvLastUpdate
     }
 
     interface OnCoinClickListener {
