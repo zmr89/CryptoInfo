@@ -7,7 +7,7 @@
 ## Использованные технологии:
 * Язык - Kotlin
 * Архитектура - MVVM (LiveData + ViewModel).
-* Хранение данных – Room для хранtybz информациb о сделках.
+* Хранение данных – Room для хранения информации о сделках.
 * RxJava3.
 * Network - Retrofit и Picasso
 * Gson
