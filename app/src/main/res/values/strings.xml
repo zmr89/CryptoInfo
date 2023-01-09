@@ -2,4 +2,9 @@
     <string name="app_name">CryptoInfo</string>
     <string name="symbols_template">%s / %s</string>
     <string name="last_time_update_template">"Время последнего обновления: %s"</string>
+    <string name="price_detail">Цена:</string>
+    <string name="min_price_detail">Минимум за день:</string>
+    <string name="max_price_detail">Максимум за день:</string>
+    <string name="last_deal_detail">Последняя сделка:</string>
+    <string name="update_detail">Обновлено:</string>
 </resources>
