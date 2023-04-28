@@ -6,19 +6,22 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoinfo.adapters.CoinInfoAdapter
+import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
 import com.example.cryptoinfo.pojo.CoinPriceInfo
-import kotlinx.android.synthetic.main.activity_coin_price_list.*
 
 class CoinPriceListActivity : AppCompatActivity() {
 
     private lateinit var coinViewModel: CoinViewModel
+    lateinit var binding: ActivityCoinPriceListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coin_price_list)
+
+        binding = ActivityCoinPriceListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val coinInfoAdapter = CoinInfoAdapter(this)
-        rvCoinPriceList.adapter = coinInfoAdapter
+        binding.rvCoinPriceList.adapter = coinInfoAdapter
 
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
@@ -27,17 +30,18 @@ class CoinPriceListActivity : AppCompatActivity() {
                 startActivity(intent)
                 Log.d("test_onCoinClick", coinPriceInfo.fromsymbol.toString())
             }
-
         }
 
         coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
 
         coinViewModel.allCoinPriceInfoListFromDB.observe(this, Observer {
-            coinInfoAdapter.listCoinPriceInfo = it
+            coinInfoAdapter.submitList(it)
             Log.d("test_load", "Success in activity: $it")
         })
 
     }
+
+
 
 
 }

@@ -6,15 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cryptoinfo.databinding.ActivityCoinDetailBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_coin_detail.*
 
 class CoinDetailActivity : AppCompatActivity() {
     lateinit var coinViewModel: CoinViewModel
 
+
+    lateinit var binding: ActivityCoinDetailBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coin_detail)
+
+        binding = ActivityCoinDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (!intent.hasExtra(FROM_SYMBOL_EXTRA)) {
             finish()
@@ -24,14 +30,14 @@ class CoinDetailActivity : AppCompatActivity() {
 
         coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
         coinViewModel.getCoinPriceInfoFromDB(fsym).observe(this, Observer {
-            Picasso.get().load(it.getFullImageUrl()).into(ivLogoDetail)
-            tvFsym.text = it.fromsymbol
-            tvTsym.text = it.tosymbol
-            tvPrice.text = it.price.toString()
-            tvMinPrice.text = it.lowday.toString()
-            tvMaxPrice.text = it.highday.toString()
-            tvLastDeal.text = it.lastmarket
-            tvLastUpdate.text = it.getFormattedTime()
+            Picasso.get().load(it.getFullImageUrl()).into(binding.ivLogoDetail)
+            binding.tvTsym.text = it.tosymbol
+            binding.tvFsym.text = it.fromsymbol
+            binding.tvPrice.text = it.price.toString()
+            binding.tvMinPrice.text = it.lowday.toString()
+            binding.tvMaxPrice.text = it.highday.toString()
+            binding.tvLastDeal.text = it.lastmarket
+            binding.tvLastUpdate.text = it.getFormattedTime()
         })
 
     }
