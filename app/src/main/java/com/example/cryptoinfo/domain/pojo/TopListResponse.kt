@@ -1,4 +1,4 @@
-package com.example.cryptoinfo.pojo
+package com.example.cryptoinfo.domain.pojo
 
 import com.google.gson.annotations.Expose
 

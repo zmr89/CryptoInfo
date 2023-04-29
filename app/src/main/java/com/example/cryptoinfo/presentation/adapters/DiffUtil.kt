@@ -1,7 +1,7 @@
-package com.example.cryptoinfo.adapters
+package com.example.cryptoinfo.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
-import com.example.cryptoinfo.pojo.CoinPriceInfo
+import com.example.cryptoinfo.domain.pojo.CoinPriceInfo
 
 
 class CoinPriceInfoItemCallback: ItemCallback<CoinPriceInfo>() {

@@ -1,14 +1,14 @@
-package com.example.cryptoinfo
+package com.example.cryptoinfo.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptoinfo.adapters.CoinInfoAdapter
+import com.example.cryptoinfo.R
+import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
-import com.example.cryptoinfo.pojo.CoinPriceInfo
+import com.example.cryptoinfo.domain.pojo.CoinPriceInfo
 
 class CoinPriceListActivity : AppCompatActivity() {
 

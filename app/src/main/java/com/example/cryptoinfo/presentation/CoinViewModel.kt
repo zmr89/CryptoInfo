@@ -1,26 +1,38 @@
-package com.example.cryptoinfo
+package com.example.cryptoinfo.presentation
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.cryptoinfo.api.ApiFactory
-import com.example.cryptoinfo.database.AppDatabase
-import com.example.cryptoinfo.pojo.CoinPriceInfo
-import com.example.cryptoinfo.pojo.CoinPriceInfoRawData
+import com.example.cryptoinfo.data.api.ApiFactory
+import com.example.cryptoinfo.data.clean.CoinPriceInfoRepositoryImpl
+import com.example.cryptoinfo.data.database.AppDatabase
+import com.example.cryptoinfo.domain.clean.GetCoinPriceInfoUC
+import com.example.cryptoinfo.domain.clean.GetListAllCoinPriceInfoUC
+import com.example.cryptoinfo.domain.clean.InsertListCoinPriceInfoUC
+import com.example.cryptoinfo.domain.pojo.CoinPriceInfo
+import com.example.cryptoinfo.domain.pojo.CoinPriceInfoRawData
 import com.google.gson.Gson
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class CoinViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val coinPriceInfoDAO = AppDatabase.getInstance(application).getCoinPriceInfoDAO()
+ //*
+    private val coinPriceInfoRepositoryImpl = CoinPriceInfoRepositoryImpl(application)
+    val getListAllCoinPriceInfoUC = GetListAllCoinPriceInfoUC(coinPriceInfoRepositoryImpl)
+    val getCoinPriceInfoUC = GetCoinPriceInfoUC(coinPriceInfoRepositoryImpl)
+    val insertListCoinPriceInfoUC = InsertListCoinPriceInfoUC(coinPriceInfoRepositoryImpl)
+//*
+//    private val coinPriceInfoDAO = AppDatabase.getInstance(application).getCoinPriceInfoDAO()
     private val compositeDisposable = CompositeDisposable()
 
-    val allCoinPriceInfoListFromDB = coinPriceInfoDAO.getListAllCoinPriceInfo()
+//    val allCoinPriceInfoListFromDB = coinPriceInfoDAO.getListAllCoinPriceInfo()
+    val allCoinPriceInfoListFromDB = getListAllCoinPriceInfoUC.getListAllCoinPriceInfo()
+
     fun getCoinPriceInfoFromDB(fsym: String?): LiveData<CoinPriceInfo> {
-        return coinPriceInfoDAO.getCoinPriceInfo(fsym)
+//        return coinPriceInfoDAO.getCoinPriceInfo(fsym)
+        return getCoinPriceInfoUC.getCoinPriceInfo(fsym)
     }
 
     init {
@@ -37,7 +49,8 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
             .retry()
             .subscribeOn(Schedulers.io())
             .subscribe({
-                coinPriceInfoDAO.insertListCoinPriceInfo(it)
+//                coinPriceInfoDAO.insertListCoinPriceInfo(it)
+                insertListCoinPriceInfoUC.insertListCoinPriceInfo(it)
                 Log.d("test_load", "Success: " + it.toString())
             }, {
                 Log.d("test_load", "Failure: " + it.message.toString())
