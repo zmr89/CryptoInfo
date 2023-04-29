@@ -3,6 +3,7 @@ package com.example.cryptoinfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoinfo.adapters.CoinInfoAdapter
@@ -25,9 +26,13 @@ class CoinPriceListActivity : AppCompatActivity() {
 
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
-                val intent = CoinDetailActivity
-                    .newIntent(this@CoinPriceListActivity, coinPriceInfo.fromsymbol)
-                startActivity(intent)
+                if (isLandscapeScreen()){
+                    launchFragment(coinPriceInfo.fromsymbol)
+                } else {
+                    val intent = CoinDetailActivity
+                        .newIntent(this@CoinPriceListActivity, coinPriceInfo.fromsymbol)
+                    startActivity(intent)
+                }
                 Log.d("test_onCoinClick", coinPriceInfo.fromsymbol.toString())
             }
         }
@@ -39,6 +44,15 @@ class CoinPriceListActivity : AppCompatActivity() {
             Log.d("test_load", "Success in activity: $it")
         })
 
+    }
+
+    private fun isLandscapeScreen(): Boolean {
+        return binding.detailFragmentContainer != null
+    }
+
+    private fun launchFragment(fsym: String) {
+        supportFragmentManager.beginTransaction().addToBackStack(null)
+            .replace(R.id.detailFragmentContainer, DetailFragment.newInstance(fsym)).commit()
     }
 
 

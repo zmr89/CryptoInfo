@@ -1,29 +1,32 @@
 package com.example.cryptoinfo
 
 import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptoinfo.databinding.ActivityCoinDetailBinding
+import com.example.cryptoinfo.databinding.FragmentDetailBinding
 import com.squareup.picasso.Picasso
 
-class CoinDetailActivity : AppCompatActivity() {
+class DetailFragment : Fragment() {
+
+    private var _binding: FragmentDetailBinding? = null
+    private val binding: FragmentDetailBinding
+        get() = _binding ?: throw Exception("FragmentDetailBinding = null")
+
     lateinit var coinViewModel: CoinViewModel
-    lateinit var binding: ActivityCoinDetailBinding
+
+    private var fsym: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityCoinDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        if (!intent.hasExtra(FROM_SYMBOL_EXTRA)) {
-            finish()
-            return
+        arguments?.let {
+            fsym = it.getString(FROM_SYMBOL_EXTRA)
         }
-        val fsym = intent.getStringExtra(FROM_SYMBOL_EXTRA)
 
         coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
         coinViewModel.getCoinPriceInfoFromDB(fsym).observe(this, Observer {
@@ -39,14 +42,28 @@ class CoinDetailActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        private const val FROM_SYMBOL_EXTRA = "fsym"
-
-        fun newIntent(context: Context, fsym: String): Intent {
-            val intent = Intent(context, CoinDetailActivity::class.java)
-            intent.putExtra(FROM_SYMBOL_EXTRA, fsym)
-            return intent
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+
+        private const val FROM_SYMBOL_EXTRA = "fsym"
+
+        fun newInstance(fsym: String) =
+            DetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString(FROM_SYMBOL_EXTRA, fsym)
+                }
+            }
+    }
 }
