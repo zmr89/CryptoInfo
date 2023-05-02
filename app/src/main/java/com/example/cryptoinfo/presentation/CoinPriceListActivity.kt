@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoinfo.R
 import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
-import com.example.cryptoinfo.domain.pojo.CoinPriceInfo
+import com.example.cryptoinfo.data.model.CoinPriceInfo
 
 class CoinPriceListActivity : AppCompatActivity() {
 

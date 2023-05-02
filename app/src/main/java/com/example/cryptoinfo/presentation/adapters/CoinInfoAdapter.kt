@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.cryptoinfo.R
 import com.example.cryptoinfo.databinding.ItemCoinInfoBinding
-import com.example.cryptoinfo.domain.pojo.CoinPriceInfo
+import com.example.cryptoinfo.data.model.CoinPriceInfo
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context)

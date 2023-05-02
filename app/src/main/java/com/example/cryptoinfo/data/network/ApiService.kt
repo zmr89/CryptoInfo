@@ -1,7 +1,7 @@
-package com.example.cryptoinfo.data.api
+package com.example.cryptoinfo.data.network
 
-import com.example.cryptoinfo.domain.pojo.CoinPriceInfoRawData
-import com.example.cryptoinfo.domain.pojo.TopListResponse
+import com.example.cryptoinfo.data.model.CoinPriceInfoRawData
+import com.example.cryptoinfo.data.model.TopListResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

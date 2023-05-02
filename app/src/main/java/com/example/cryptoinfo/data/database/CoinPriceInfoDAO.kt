@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.example.cryptoinfo.domain.pojo.CoinPriceInfo
+import com.example.cryptoinfo.data.model.CoinPriceInfo
 
 @Dao
 interface CoinPriceInfoDAO {

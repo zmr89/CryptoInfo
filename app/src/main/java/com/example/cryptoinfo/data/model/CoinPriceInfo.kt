@@ -1,8 +1,8 @@
-package com.example.cryptoinfo.domain.pojo
+package com.example.cryptoinfo.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.cryptoinfo.data.api.ApiFactory.BASE_IMAGE_URL
+import com.example.cryptoinfo.data.network.ApiFactory.BASE_IMAGE_URL
 import com.example.cryptoinfo.utils.convertTimestampToTime
 import com.google.gson.annotations.Expose
 

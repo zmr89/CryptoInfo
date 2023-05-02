@@ -1,4 +1,4 @@
-package com.example.cryptoinfo.data.api
+package com.example.cryptoinfo.data.network
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
