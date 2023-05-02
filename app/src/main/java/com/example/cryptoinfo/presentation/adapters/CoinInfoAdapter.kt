@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.cryptoinfo.R
 import com.example.cryptoinfo.databinding.ItemCoinInfoBinding
-import com.example.cryptoinfo.data.model.CoinPriceInfo
+import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context)
-    : ListAdapter<CoinPriceInfo, CoinInfoViewHolder>(CoinPriceInfoItemCallback()) {
+    : ListAdapter<CoinInfoDbModel, CoinInfoViewHolder>(CoinPriceInfoItemCallback()) {
 
     var onCoinClickListener: OnCoinClickListener? = null
 
@@ -38,7 +38,7 @@ class CoinInfoAdapter(private val context: Context)
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coinPriceInfo: CoinPriceInfo)
+        fun onCoinClick(coinInfoDbModel: CoinInfoDbModel)
     }
 
 }

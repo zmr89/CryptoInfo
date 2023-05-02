@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoinfo.R
 import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
-import com.example.cryptoinfo.data.model.CoinPriceInfo
+import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 
 class CoinPriceListActivity : AppCompatActivity() {
 
@@ -25,15 +25,15 @@ class CoinPriceListActivity : AppCompatActivity() {
         binding.rvCoinPriceList.adapter = coinInfoAdapter
 
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
+            override fun onCoinClick(coinInfoDbModel: CoinInfoDbModel) {
                 if (isLandscapeScreen()){
-                    launchFragment(coinPriceInfo.fromsymbol)
+                    launchFragment(coinInfoDbModel.fromsymbol)
                 } else {
                     val intent = CoinDetailActivity
-                        .newIntent(this@CoinPriceListActivity, coinPriceInfo.fromsymbol)
+                        .newIntent(this@CoinPriceListActivity, coinInfoDbModel.fromsymbol)
                     startActivity(intent)
                 }
-                Log.d("test_onCoinClick", coinPriceInfo.fromsymbol.toString())
+                Log.d("test_onCoinClick", coinInfoDbModel.fromsymbol.toString())
             }
         }
 

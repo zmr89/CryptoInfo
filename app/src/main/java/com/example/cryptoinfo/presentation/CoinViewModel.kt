@@ -7,7 +7,7 @@ import com.example.cryptoinfo.data.clean.CoinPriceInfoRepositoryImpl
 import com.example.cryptoinfo.domain.clean.GetCoinPriceInfoUC
 import com.example.cryptoinfo.domain.clean.GetListAllCoinPriceInfoUC
 import com.example.cryptoinfo.domain.clean.GetTopListAndInsertUC
-import com.example.cryptoinfo.data.model.CoinPriceInfo
+import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class CoinViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,7 +23,7 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
 //    val allCoinPriceInfoListFromDB = coinPriceInfoDAO.getListAllCoinPriceInfo()
     val allCoinPriceInfoListFromDB = getListAllCoinPriceInfoUC.getListAllCoinPriceInfo()
 
-    fun getCoinPriceInfoFromDB(fsym: String?): LiveData<CoinPriceInfo> {
+    fun getCoinPriceInfoFromDB(fsym: String?): LiveData<CoinInfoDbModel> {
 //        return coinPriceInfoDAO.getCoinPriceInfo(fsym)
         return getCoinPriceInfoUC.getCoinPriceInfo(fsym)
     }

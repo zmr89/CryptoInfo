@@ -1,6 +1,6 @@
 package com.example.cryptoinfo.domain.sumin
 
-data class CoinPriceInfoEntity(
+data class CoinInfoEntity(
     val imageurl: String?,
     val tosymbol: String?,
     val fromsymbol: String,

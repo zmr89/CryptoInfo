@@ -1,5 +1,5 @@
 package com.example.cryptoinfo.domain.sumin
 
-class GetCoinPriceInfoListUseCase(private val repository : CoinPriceInfoRepository) {
+class GetCoinInfoListUseCase(private val repository : CoinInfoRepository) {
     operator fun invoke() = repository.getCoinPriceInfoList()
 }

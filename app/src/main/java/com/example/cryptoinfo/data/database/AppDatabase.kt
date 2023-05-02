@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.cryptoinfo.data.model.CoinPriceInfo
+import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 
-@Database(entities = [CoinPriceInfo::class], version = 1, exportSchema = false)
+@Database(entities = [CoinInfoDbModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     companion object{
@@ -23,6 +23,6 @@ abstract class AppDatabase: RoomDatabase() {
         }
     }
 
-    abstract fun getCoinPriceInfoDAO(): CoinPriceInfoDAO
+    abstract fun getDAO(): CoinInfoDAO
 
 }
