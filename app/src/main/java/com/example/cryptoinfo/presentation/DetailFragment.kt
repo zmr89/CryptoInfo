@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cryptoinfo.data.network.ApiFactory.BASE_IMAGE_URL
 import com.example.cryptoinfo.databinding.FragmentDetailBinding
+import com.example.cryptoinfo.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class DetailFragment : Fragment() {
@@ -18,25 +20,25 @@ class DetailFragment : Fragment() {
 
     lateinit var coinViewModel: CoinViewModel
 
-    private var fsym: String? = null
+    lateinit var fsym: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            fsym = it.getString(FROM_SYMBOL_EXTRA)
+            fsym = it.getString(FROM_SYMBOL_EXTRA) ?: EMPTY_SYMBOL
         }
 
         coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
-        coinViewModel.getCoinPriceInfoFromDB(fsym).observe(this, Observer {
-            Picasso.get().load(it.getFullImageUrl()).into(binding.ivLogoDetail)
+        coinViewModel.getDetailInfo(fsym).observe(this, Observer {
+            Picasso.get().load(BASE_IMAGE_URL + it.imageurl).into(binding.ivLogoDetail)
             binding.tvTsym.text = it.tosymbol
             binding.tvFsym.text = it.fromsymbol
             binding.tvPrice.text = it.price.toString()
             binding.tvMinPrice.text = it.lowday.toString()
             binding.tvMaxPrice.text = it.highday.toString()
             binding.tvLastDeal.text = it.lastmarket
-            binding.tvLastUpdate.text = it.getFormattedTime()
+            binding.tvLastUpdate.text = convertTimestampToTime(it.lastupdate)
         })
 
     }
@@ -57,6 +59,7 @@ class DetailFragment : Fragment() {
     companion object {
 
         private const val FROM_SYMBOL_EXTRA = "fsym"
+        private const val EMPTY_SYMBOL = ""
 
         fun newInstance(fsym: String) =
             DetailFragment().apply {

@@ -196,13 +196,14 @@ data class CoinInfoDto (
     @SerializedName("IMAGEURL")
     @Expose
     val imageurl: String?
-) {
-
-    fun getFormattedTime(): String {
-        return convertTimestampToTime(lastupdate)
-    }
-
-    fun getFullImageUrl(): String {
-        return BASE_IMAGE_URL + imageurl
-    }
-}
+)
+//{
+//
+//    fun getFormattedTime(): String {
+//        return convertTimestampToTime(lastupdate)
+//    }
+//
+//    fun getFullImageUrl(): String {
+//        return BASE_IMAGE_URL + imageurl
+//    }
+//}

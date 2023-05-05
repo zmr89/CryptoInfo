@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.cryptoinfo.R
+import com.example.cryptoinfo.data.mapper.CoinMapper
+import com.example.cryptoinfo.data.network.ApiFactory
 import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
-import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
+import com.example.cryptoinfo.domain.sumin.CoinInfoEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class CoinPriceListActivity : AppCompatActivity() {
 
@@ -18,28 +23,39 @@ class CoinPriceListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        lifecycleScope.launch {
+            val coinNamesListDto = ApiFactory.apiService.getTopList(limit = 50)
+            val string = CoinMapper().mapNamesListToString(coinNamesListDto)
+            Log.d("TestMarsel", "string")
+            Log.d("TestMarsel", string)
+        }
+        Log.d("TestMarsel", "string")
+
+
         binding = ActivityCoinPriceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
 
         val coinInfoAdapter = CoinInfoAdapter(this)
         binding.rvCoinPriceList.adapter = coinInfoAdapter
 
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coinInfoDbModel: CoinInfoDbModel) {
+            override fun onCoinClick(coinInfoEntity: CoinInfoEntity) {
                 if (isLandscapeScreen()){
-                    launchFragment(coinInfoDbModel.fromsymbol)
+                    launchFragment(coinInfoEntity.fromsymbol)
                 } else {
                     val intent = CoinDetailActivity
-                        .newIntent(this@CoinPriceListActivity, coinInfoDbModel.fromsymbol)
+                        .newIntent(this@CoinPriceListActivity, coinInfoEntity.fromsymbol)
                     startActivity(intent)
                 }
-                Log.d("test_onCoinClick", coinInfoDbModel.fromsymbol.toString())
+                Log.d("test_onCoinClick", coinInfoEntity.fromsymbol.toString())
             }
         }
 
-        coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
 
-        coinViewModel.allCoinPriceInfoListFromDB.observe(this, Observer {
+
+        coinViewModel.coinInfoList.observe(this, Observer {
             coinInfoAdapter.submitList(it)
             Log.d("test_load", "Success in activity: $it")
         })

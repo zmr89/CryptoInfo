@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 
 interface CoinInfoRepository {
 
-    fun getCoinPriceInfoList(): LiveData<List<CoinInfoEntity>>
-    fun getCoinPriceInfo(fsym: String?): LiveData<CoinInfoEntity>
+    fun getCoinInfoList(): LiveData<List<CoinInfoEntity>>
+    fun getCoinInfo(fsym: String?): LiveData<CoinInfoEntity>
     suspend fun loadAndInsertData()
 
 }
