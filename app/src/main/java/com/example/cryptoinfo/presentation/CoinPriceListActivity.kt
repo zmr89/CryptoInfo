@@ -11,15 +11,15 @@ import com.example.cryptoinfo.data.mapper.CoinMapper
 import com.example.cryptoinfo.data.network.ApiFactory
 import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
-import com.example.cryptoinfo.domain.sumin.CoinInfoEntity
-import kotlinx.coroutines.CoroutineScope
+import com.example.cryptoinfo.domain.CoinInfoEntity
 import kotlinx.coroutines.launch
 
 class CoinPriceListActivity : AppCompatActivity() {
 
     private lateinit var coinViewModel: CoinViewModel
-    lateinit var binding: ActivityCoinPriceListBinding
-
+    private val binding by lazy {
+        ActivityCoinPriceListBinding.inflate(layoutInflater)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,25 +31,22 @@ class CoinPriceListActivity : AppCompatActivity() {
         }
         Log.d("TestMarsel", "string")
 
-
-        binding = ActivityCoinPriceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
 
         val coinInfoAdapter = CoinInfoAdapter(this)
         binding.rvCoinPriceList.adapter = coinInfoAdapter
+        binding.rvCoinPriceList.itemAnimator = null
 
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinInfoEntity: CoinInfoEntity) {
                 if (isLandscapeScreen()){
                     launchFragment(coinInfoEntity.fromsymbol)
                 } else {
-                    val intent = CoinDetailActivity
-                        .newIntent(this@CoinPriceListActivity, coinInfoEntity.fromsymbol)
-                    startActivity(intent)
+                    launchActivity(coinInfoEntity)
                 }
-                Log.d("test_onCoinClick", coinInfoEntity.fromsymbol.toString())
+                Log.d("test_onCoinClick", coinInfoEntity.fromsymbol)
             }
         }
 
@@ -67,8 +64,15 @@ class CoinPriceListActivity : AppCompatActivity() {
     }
 
     private fun launchFragment(fsym: String) {
+        supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction().addToBackStack(null)
             .replace(R.id.detailFragmentContainer, DetailFragment.newInstance(fsym)).commit()
+    }
+
+    private fun launchActivity(coinInfoEntity: CoinInfoEntity) {
+        val intent = CoinDetailActivity
+            .newIntent(this@CoinPriceListActivity, coinInfoEntity.fromsymbol)
+        startActivity(intent)
     }
 
 

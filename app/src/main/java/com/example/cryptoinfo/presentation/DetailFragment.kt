@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptoinfo.data.network.ApiFactory.BASE_IMAGE_URL
 import com.example.cryptoinfo.databinding.FragmentDetailBinding
-import com.example.cryptoinfo.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class DetailFragment : Fragment() {
@@ -22,33 +20,30 @@ class DetailFragment : Fragment() {
 
     lateinit var fsym: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            fsym = it.getString(FROM_SYMBOL_EXTRA) ?: EMPTY_SYMBOL
-        }
-
-        coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
-        coinViewModel.getDetailInfo(fsym).observe(this, Observer {
-            Picasso.get().load(BASE_IMAGE_URL + it.imageurl).into(binding.ivLogoDetail)
-            binding.tvTsym.text = it.tosymbol
-            binding.tvFsym.text = it.fromsymbol
-            binding.tvPrice.text = it.price.toString()
-            binding.tvMinPrice.text = it.lowday.toString()
-            binding.tvMaxPrice.text = it.highday.toString()
-            binding.tvLastDeal.text = it.lastmarket
-            binding.tvLastUpdate.text = convertTimestampToTime(it.lastupdate)
-        })
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fsym = getFromSymbol()
+
+        coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
+        coinViewModel.getDetailInfo(fsym).observe(viewLifecycleOwner, Observer {
+            Picasso.get().load(it.imageurl).into(binding.ivLogoDetail)
+            binding.tvTsym.text = it.tosymbol
+            binding.tvFsym.text = it.fromsymbol
+            binding.tvPrice.text = it.price.toString()
+            binding.tvMinPrice.text = it.lowday.toString()
+            binding.tvMaxPrice.text = it.highday.toString()
+            binding.tvLastDeal.text = it.lastmarket
+            binding.tvLastUpdate.text = it.lastupdate
+        })
     }
 
     override fun onDestroyView() {
@@ -67,5 +62,9 @@ class DetailFragment : Fragment() {
                     putString(FROM_SYMBOL_EXTRA, fsym)
                 }
             }
+    }
+
+    private fun getFromSymbol(): String {
+        return requireArguments().getString(FROM_SYMBOL_EXTRA) ?: EMPTY_SYMBOL
     }
 }

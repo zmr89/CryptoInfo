@@ -7,8 +7,8 @@ import com.example.cryptoinfo.data.database.AppDatabase
 import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 import com.example.cryptoinfo.data.mapper.CoinMapper
 import com.example.cryptoinfo.data.network.ApiFactory
-import com.example.cryptoinfo.domain.sumin.CoinInfoEntity
-import com.example.cryptoinfo.domain.sumin.CoinInfoRepository
+import com.example.cryptoinfo.domain.CoinInfoEntity
+import com.example.cryptoinfo.domain.CoinInfoRepository
 import kotlinx.coroutines.delay
 
 class CoinInfoRepositoryImpl(application: Application): CoinInfoRepository {
@@ -30,8 +30,8 @@ class CoinInfoRepositoryImpl(application: Application): CoinInfoRepository {
     }
 
     override suspend fun loadAndInsertData() {
-//        while (true){
-//            try {
+        while (true){
+            try {
                 val coinNamesListDto = apiService.getTopList(limit = 50)
                 val coinNamesListToString = mapper.mapNamesListToString(coinNamesListDto)
                 val coinInfoJsonContainerDto = apiService
@@ -39,9 +39,9 @@ class CoinInfoRepositoryImpl(application: Application): CoinInfoRepository {
                 val listCoinInfoDto = mapper.mapJsonContainerToListCoinInfoDto(coinInfoJsonContainerDto)
                 val listCoinInfoDbModel = mapper.mapListDtoToDbModel(listCoinInfoDto)
                 insertListCoinInfoToDb(listCoinInfoDbModel)
-//            } catch (e: Exception) { }
+            } catch (e: Exception) { }
             delay(10_000)
-//        }
+        }
     }
 
     private suspend fun insertListCoinInfoToDb(list: List<CoinInfoDbModel>) {

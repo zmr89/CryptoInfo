@@ -1,4 +1,4 @@
-package com.example.cryptoinfo.domain.sumin
+package com.example.cryptoinfo.domain
 
 import androidx.lifecycle.LiveData
 

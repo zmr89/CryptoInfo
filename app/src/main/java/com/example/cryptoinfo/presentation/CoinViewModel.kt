@@ -2,13 +2,11 @@ package com.example.cryptoinfo.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoinfo.data.repository.CoinInfoRepositoryImpl
-import com.example.cryptoinfo.domain.sumin.CoinInfoEntity
-import com.example.cryptoinfo.domain.sumin.GetCoinInfoListUseCase
-import com.example.cryptoinfo.domain.sumin.GetCoinInfoUseCase
-import com.example.cryptoinfo.domain.sumin.LoadAndInsertDataUseCase
+import com.example.cryptoinfo.domain.GetCoinInfoListUseCase
+import com.example.cryptoinfo.domain.GetCoinInfoUseCase
+import com.example.cryptoinfo.domain.LoadAndInsertDataUseCase
 import kotlinx.coroutines.launch
 
 class CoinViewModel(application: Application) : AndroidViewModel(application) {
