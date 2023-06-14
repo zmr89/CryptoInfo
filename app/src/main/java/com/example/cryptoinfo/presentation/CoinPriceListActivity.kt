@@ -22,23 +22,9 @@ class CoinPriceListActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            val coinNamesListDto = ApiFactory.apiService.getTopList(limit = 50)
-            val string = CoinMapper().mapNamesListToString(coinNamesListDto)
-            Log.d("TestMarsel", "string")
-            Log.d("TestMarsel", string)
-        }
-        Log.d("TestMarsel", "string")
-
         setContentView(binding.root)
 
-        coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-
         val coinInfoAdapter = CoinInfoAdapter(this)
-        binding.rvCoinPriceList.adapter = coinInfoAdapter
-        binding.rvCoinPriceList.itemAnimator = null
-
         coinInfoAdapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
             override fun onCoinClick(coinInfoEntity: CoinInfoEntity) {
                 if (isLandscapeScreen()){
@@ -50,8 +36,10 @@ class CoinPriceListActivity : AppCompatActivity() {
             }
         }
 
+        binding.rvCoinPriceList.adapter = coinInfoAdapter
+        binding.rvCoinPriceList.itemAnimator = null
 
-
+        coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         coinViewModel.coinInfoList.observe(this, Observer {
             coinInfoAdapter.submitList(it)
             Log.d("test_load", "Success in activity: $it")

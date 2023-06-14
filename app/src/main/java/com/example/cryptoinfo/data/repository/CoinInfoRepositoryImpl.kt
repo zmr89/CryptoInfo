@@ -3,18 +3,20 @@ package com.example.cryptoinfo.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import com.example.cryptoinfo.data.database.AppDatabase
 import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 import com.example.cryptoinfo.data.mapper.CoinMapper
 import com.example.cryptoinfo.data.network.ApiFactory
+import com.example.cryptoinfo.data.worker.RefreshDataWorker
 import com.example.cryptoinfo.domain.CoinInfoEntity
 import com.example.cryptoinfo.domain.CoinInfoRepository
 import kotlinx.coroutines.delay
 
-class CoinInfoRepositoryImpl(application: Application): CoinInfoRepository {
+class CoinInfoRepositoryImpl(private val application: Application): CoinInfoRepository {
 
     private val dao = AppDatabase.getInstance(application).getDAO()
-    private val apiService = ApiFactory.apiService
     private val mapper = CoinMapper()
 
     override fun getCoinInfoList(): LiveData<List<CoinInfoEntity>> {
@@ -29,23 +31,11 @@ class CoinInfoRepositoryImpl(application: Application): CoinInfoRepository {
         }
     }
 
-    override suspend fun loadAndInsertData() {
-        while (true){
-            try {
-                val coinNamesListDto = apiService.getTopList(limit = 50)
-                val coinNamesListToString = mapper.mapNamesListToString(coinNamesListDto)
-                val coinInfoJsonContainerDto = apiService
-                    .getCoinPriceInfoRawData(fsyms = coinNamesListToString)
-                val listCoinInfoDto = mapper.mapJsonContainerToListCoinInfoDto(coinInfoJsonContainerDto)
-                val listCoinInfoDbModel = mapper.mapListDtoToDbModel(listCoinInfoDto)
-                insertListCoinInfoToDb(listCoinInfoDbModel)
-            } catch (e: Exception) { }
-            delay(10_000)
-        }
-    }
-
-    private suspend fun insertListCoinInfoToDb(list: List<CoinInfoDbModel>) {
-        dao.insertListCoinInfo(list)
+    override fun loadAndInsertData() {
+        val worker = WorkManager.getInstance(application)
+        worker.enqueueUniqueWork(RefreshDataWorker.WORKER_NAME,
+            ExistingWorkPolicy.REPLACE,
+        RefreshDataWorker.makeOneTimeWorkRequest())
     }
 
 }
