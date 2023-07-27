@@ -13,14 +13,28 @@ import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
 import com.example.cryptoinfo.domain.CoinInfoEntity
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class CoinPriceListActivity : AppCompatActivity() {
 
-    private lateinit var coinViewModel: CoinViewModel
+    @Inject
+    lateinit var coinViewModelFactory: CoinViewModelFactory
+
+    private val coinViewModel: CoinViewModel by lazy {
+        ViewModelProvider(this, coinViewModelFactory).get(CoinViewModel::class.java)
+    }
+
     private val binding by lazy {
         ActivityCoinPriceListBinding.inflate(layoutInflater)
     }
+
+    private val component by lazy {
+    (application as CoinApplication).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -39,11 +53,13 @@ class CoinPriceListActivity : AppCompatActivity() {
         binding.rvCoinPriceList.adapter = coinInfoAdapter
         binding.rvCoinPriceList.itemAnimator = null
 
-        coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
+//        coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         coinViewModel.coinInfoList.observe(this, Observer {
             coinInfoAdapter.submitList(it)
             Log.d("test_load", "Success in activity: $it")
         })
+
+        Log.d("ViewModelScope", "$coinViewModel")
 
     }
 

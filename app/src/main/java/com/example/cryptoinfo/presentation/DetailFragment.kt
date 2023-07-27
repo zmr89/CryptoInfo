@@ -1,6 +1,8 @@
 package com.example.cryptoinfo.presentation
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoinfo.databinding.FragmentDetailBinding
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class DetailFragment : Fragment() {
 
@@ -16,9 +19,22 @@ class DetailFragment : Fragment() {
     private val binding: FragmentDetailBinding
         get() = _binding ?: throw Exception("FragmentDetailBinding = null")
 
-    lateinit var coinViewModel: CoinViewModel
+    @Inject
+    lateinit var coinViewModelFactory: CoinViewModelFactory
+    private val coinViewModel: CoinViewModel by lazy {
+        ViewModelProvider(this, coinViewModelFactory).get(CoinViewModel::class.java)
+    }
+
+    private val component by lazy {
+        (requireActivity().application as CoinApplication).component
+    }
 
     lateinit var fsym: String
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +49,7 @@ class DetailFragment : Fragment() {
 
         fsym = getFromSymbol()
 
-        coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
+//        coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
         coinViewModel.getDetailInfo(fsym).observe(viewLifecycleOwner, Observer {
             Picasso.get().load(it.imageurl).into(binding.ivLogoDetail)
             binding.tvTsym.text = it.tosymbol
@@ -44,6 +60,7 @@ class DetailFragment : Fragment() {
             binding.tvLastDeal.text = it.lastmarket
             binding.tvLastUpdate.text = it.lastupdate
         })
+        Log.d("ViewModelScope", "$coinViewModel")
     }
 
     override fun onDestroyView() {

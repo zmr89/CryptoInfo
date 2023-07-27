@@ -1,5 +1,9 @@
 package com.example.cryptoinfo.domain
 
-class LoadAndInsertDataUseCase(private val coinInfoRepository: CoinInfoRepository) {
+import javax.inject.Inject
+
+class LoadAndInsertDataUseCase @Inject constructor(
+    private val coinInfoRepository: CoinInfoRepository
+    ) {
     operator fun invoke() = coinInfoRepository.loadAndInsertData()
 }
