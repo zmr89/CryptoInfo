@@ -1,9 +1,7 @@
 package com.example.cryptoinfo.presentation
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.cryptoinfo.di.ApplicationScope
 import javax.inject.Inject
 import javax.inject.Provider
 

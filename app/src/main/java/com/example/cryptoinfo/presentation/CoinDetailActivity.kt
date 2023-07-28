@@ -2,13 +2,10 @@ package com.example.cryptoinfo.presentation
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptoinfo.R
 import com.example.cryptoinfo.databinding.ActivityCoinDetailBinding
-import com.squareup.picasso.Picasso
 
 class CoinDetailActivity : AppCompatActivity() {
     private val binding by lazy {

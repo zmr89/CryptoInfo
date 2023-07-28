@@ -2,11 +2,10 @@ package com.example.cryptoinfo.presentation
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoinfo.databinding.FragmentDetailBinding
@@ -49,7 +48,6 @@ class DetailFragment : Fragment() {
 
         fsym = getFromSymbol()
 
-//        coinViewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
         coinViewModel.getDetailInfo(fsym).observe(viewLifecycleOwner, Observer {
             Picasso.get().load(it.imageurl).into(binding.ivLogoDetail)
             binding.tvTsym.text = it.tosymbol
@@ -60,7 +58,6 @@ class DetailFragment : Fragment() {
             binding.tvLastDeal.text = it.lastmarket
             binding.tvLastUpdate.text = it.lastupdate
         })
-        Log.d("ViewModelScope", "$coinViewModel")
     }
 
     override fun onDestroyView() {
