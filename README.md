@@ -10,6 +10,7 @@
 * Хранение данных – Room для хранения информации о сделках
 * Coroutine
 * WorkManager
+* Dagger 2
 * Network - Retrofit и Picasso
 * Gson
 
