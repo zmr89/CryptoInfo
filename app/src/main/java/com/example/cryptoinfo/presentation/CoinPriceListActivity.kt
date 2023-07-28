@@ -1,18 +1,14 @@
 package com.example.cryptoinfo.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.cryptoinfo.R
-import com.example.cryptoinfo.data.mapper.CoinMapper
-import com.example.cryptoinfo.data.network.ApiFactory
-import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import com.example.cryptoinfo.databinding.ActivityCoinPriceListBinding
 import com.example.cryptoinfo.domain.CoinInfoEntity
-import kotlinx.coroutines.launch
+import com.example.cryptoinfo.presentation.adapters.CoinInfoAdapter
 import javax.inject.Inject
 
 class CoinPriceListActivity : AppCompatActivity() {
@@ -53,13 +49,10 @@ class CoinPriceListActivity : AppCompatActivity() {
         binding.rvCoinPriceList.adapter = coinInfoAdapter
         binding.rvCoinPriceList.itemAnimator = null
 
-//        coinViewModel = ViewModelProvider(this)[CoinViewModel::class.java]
         coinViewModel.coinInfoList.observe(this, Observer {
             coinInfoAdapter.submitList(it)
-            Log.d("test_load", "Success in activity: $it")
         })
 
-        Log.d("ViewModelScope", "$coinViewModel")
 
     }
 

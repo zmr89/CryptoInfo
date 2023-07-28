@@ -2,15 +2,14 @@ package com.example.cryptoinfo.data.worker
 
 import android.content.Context
 import androidx.work.*
-import com.example.cryptoinfo.data.database.AppDatabase
 import com.example.cryptoinfo.data.database.CoinInfoDAO
 import com.example.cryptoinfo.data.database.model.CoinInfoDbModel
 import com.example.cryptoinfo.data.mapper.CoinMapper
-import com.example.cryptoinfo.data.network.ApiFactory
 import com.example.cryptoinfo.data.network.ApiService
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class RefreshDataWorker(
+class RefreshDataWorker (
     context: Context,
     workerParameters: WorkerParameters,
     private val dao: CoinInfoDAO,
@@ -18,9 +17,6 @@ class RefreshDataWorker(
     private val mapper: CoinMapper
 ) : CoroutineWorker(context, workerParameters) {
 
-//    private val dao = AppDatabase.getInstance(context).getDAO()
-//    private val apiService = ApiFactory.apiService
-//    private val mapper = CoinMapper()
     override suspend fun doWork(): Result {
         while (true){
             try {
@@ -49,4 +45,19 @@ class RefreshDataWorker(
             return OneTimeWorkRequestBuilder<RefreshDataWorker>().build()
         }
     }
+
+    class Factory @Inject constructor(
+        private val dao: CoinInfoDAO,
+        private val apiService: ApiService,
+        private val mapper: CoinMapper
+    ) : ChildWorkerFactory {
+        override fun create(
+            context: Context,
+            workerParameters: WorkerParameters
+        ): ListenableWorker {
+            return RefreshDataWorker(context, workerParameters, dao, apiService, mapper)
+        }
+
+    }
+
 }
